@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpService } from './http.service';
 
 @Component({
   selector: 'app-root',
@@ -7,13 +7,54 @@ import { HttpClient } from '@angular/common/http';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
+
   title = 'calculateHighestReturns';
-  
+  data: any[];
+
+  highestIndex: number = 0;
+  lowestIndex: number = 0;
+  eligibleHighestIndex: number = 0;
+
+  buyingPrice: number;
+  buyingDate: number;
+  sellingPrice: number;
+  sellingDate: number;
+
   constructor(
-    private http: HttpClient
-  ) { 
-    this.http.get("https://modularfinance.se/static/files/puzzles/index-trader.json?callback=func").subscribe((res) => {
-      console.log(res);
+    private http: HttpService
+  ) {
+    this.getData();
+  }
+
+  getData() {
+    this.http.getMarketData().subscribe((data: []) => {
+      this.data = data["data"];
+      this.calculateDates();
     });
   }
+
+  calculateDates() {
+    for(let i = 0; i < this.data.length; i++) {
+      if(i === 0) {
+        this.lowestIndex = 0;
+        this.highestIndex = 0;
+      } else {
+        if (this.data[this.lowestIndex].low > this.data[i].low) {
+          this.lowestIndex = i;
+        }
+        if (this.data[this.highestIndex].high < this.data[i].high) {
+          this.highestIndex = i;
+          if (this.data[this.highestIndex].quote_date > this.data[this.lowestIndex].quote_date) {
+            this.eligibleHighestIndex = i;
+          }
+        }
+      }
+    }
+    this.buyingDate = this.data[this.lowestIndex].quote_date;
+    this.buyingPrice = this.data[this.lowestIndex].low;
+    
+    this.sellingDate = this.data[this.eligibleHighestIndex].quote_date;
+    this.sellingPrice = this.data[this.eligibleHighestIndex].high;
+  }
+
 }
