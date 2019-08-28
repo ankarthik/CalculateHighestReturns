@@ -6,8 +6,7 @@ import { HttpClient } from '@angular/common/http';
 })
 export class HttpService {
 
-  // private configUrl: string = 'assets/index-trader.json';
-  private configUrl: string = 'https://modularfinance.se/static/files/puzzles/index-trader.json';
+  private configUrl: string = './assets/index-trader.json';
 
   constructor(
     private http: HttpClient
