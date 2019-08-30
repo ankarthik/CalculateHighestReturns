@@ -56,8 +56,8 @@ export class AppComponent {
     this.buyingDate = this.data[this.lowestIndex].quote_date;
     this.buyingPrice = this.data[this.lowestIndex].low;
     
-    this.sellingDate = this.data[this.highestIndex].quote_date;
-    this.sellingPrice = this.data[this.highestIndex].high;
+    this.sellingDate = this.data[this.eligibleHighestIndex].quote_date;
+    this.sellingPrice = this.data[this.eligibleHighestIndex].high;
   }
 
 }
