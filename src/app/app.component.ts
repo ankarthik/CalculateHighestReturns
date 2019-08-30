@@ -8,6 +8,9 @@ import { HttpService } from './http.service';
 })
 export class AppComponent {
 
+  // ng build --prod --base-href https://ankarthik.github.io/CalculateHighestReturns/
+  // ngh --dir=dist/CalculateHighestReturns
+
   title = 'calculateHighestReturns';
   data: any[];
 
@@ -44,17 +47,17 @@ export class AppComponent {
         }
         if (this.data[this.highestIndex].high < this.data[i].high) {
           this.highestIndex = i;
-          if (this.data[this.highestIndex].quote_date > this.data[this.lowestIndex].quote_date) {
-            this.eligibleHighestIndex = i;
-          }
+        }
+        if (this.data[this.highestIndex].quote_date > this.data[this.lowestIndex].quote_date) {
+          this.eligibleHighestIndex = i;
         }
       }
     }
     this.buyingDate = this.data[this.lowestIndex].quote_date;
     this.buyingPrice = this.data[this.lowestIndex].low;
     
-    this.sellingDate = this.data[this.eligibleHighestIndex].quote_date;
-    this.sellingPrice = this.data[this.eligibleHighestIndex].high;
+    this.sellingDate = this.data[this.highestIndex].quote_date;
+    this.sellingPrice = this.data[this.highestIndex].high;
   }
 
 }
