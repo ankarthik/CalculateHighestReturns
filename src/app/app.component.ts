@@ -38,18 +38,15 @@ export class AppComponent {
 
   calculateDates() {
     for(let i = 0; i < this.data.length; i++) {
-      if(i === 0) {
-        this.lowestIndex = 0;
-        this.highestIndex = 0;
-      } else {
+      if(i > 0) {
         if (this.data[this.lowestIndex].low > this.data[i].low) {
           this.lowestIndex = i;
         }
         if (this.data[this.highestIndex].high < this.data[i].high) {
           this.highestIndex = i;
-        }
-        if (this.data[this.highestIndex].quote_date > this.data[this.lowestIndex].quote_date) {
-          this.eligibleHighestIndex = i;
+          if (this.data[this.highestIndex].quote_date >= this.data[this.lowestIndex].quote_date) {
+            this.eligibleHighestIndex = i;
+          }
         }
       }
     }
